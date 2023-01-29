@@ -1,0 +1,32 @@
+{% extends "base_generic.html"%}
+{% block content %}
+
+<h1> My Weather Sensors Home </h1>
+<p> Welcome to my Sensors Data by <em> Pau Amargant </em> </p>
+<h2> App Statistics </h2>
+<p> The current counts are:: </p>
+<ul>
+    <li> <strong> Sensors: </strong> {{num_sensors}}</li>
+    <li> <strong> Measurements: </strong> {{num_measurements}}</li>
+    <li> <strong> Measures: </strong> {{num_measures}} </li>
+</ul>
+
+<h2> Sensors </h2>
+<ul>
+{% for s in sensors %}
+ <li>{{s.id}} - {{s.room}}
+{% endfor %}
+ </ul>
+
+ <h2> Measurements </h2>
+<ul>
+{% for s in sensors %}
+<li> Sensor {{s.id}}:
+     {% for m in s.measurement_set.all %}
+      {{m}}
+    {% endfor %}
+{% endfor %}
+ </ul>
+{% load static %}
+<img src="{% static 'images/esp32.jpg' %}" alt="ESP32 setup" style="width:400px;" /
+{% endblock %}
