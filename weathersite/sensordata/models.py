@@ -6,6 +6,7 @@ class Measure(models.Model):
     """Used to specify which measurement can a sensor do (f. ex Temeprature)"""
     unit = models.CharField(max_length=10)
     description = models.CharField(max_length=200)
+    name = models.CharField(max_length=20)
 
     def __str__(self):
         return self.description
