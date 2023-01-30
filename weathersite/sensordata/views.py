@@ -27,6 +27,12 @@ class SensorDetailView(generic.DetailView):
         context["measures_names"] = ', '.join(
             [m.name for m in context["sensor"].measurements.all()])
 
-        
+        # obtenim dades de temperatura pel sensor
+        temp_mes = context["sensor"].measurement_set.filter(unit="Temperature")
 
+        context["labels"] = []
+        context["values"] = []
+        for element in reversed(temp_mes.all()):
+            context["labels"].append(element.time)
+            context["values"].append(element.value)
         return context

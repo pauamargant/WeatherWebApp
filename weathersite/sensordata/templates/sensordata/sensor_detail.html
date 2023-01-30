@@ -1,35 +1,64 @@
-{% extends "base_generic.html"%}
+{% extends "base_generic.html" %}
 {% block content %}
-<h1> Sensor {{sensor.id}}</h1>
-<p><strong>Room:</strong> {{sensor.room}}</p>
-<p><strong>Description:</strong> {{sensor.description}}</p>
-<p><strong> Measures:</strong> {{measures_names}}</p>     
-
-<h2> Measures </h2>
-<div class="container">
-    <div class="row">
-        {% regroup sensor.measurement_set.all by unit as measurements_kind %}
-        {% for measures in measurements_kind%}
-        <div class="col-sm">
-            <table class = "table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope ="col">{{measures.grouper}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for m in measures.list %}
-                <tr>
-                    <th scope="row"> {{ m.time|date:'d/m/Y H:i' }} </th>
-                    <td scope="row"> {{m.value}}{{m.unit.unit}}</td>
-                </tr>
-                {% endfor %}
-        </table>
+    <h1>Sensor {{ sensor.id }}</h1>
+    <p>
+        <strong>Room:</strong> {{ sensor.room }}
+    </p>
+    <p>
+        <strong>Description:</strong> {{ sensor.description }}
+    </p>
+    <p>
+        <strong>Measures:</strong> {{ measures_names }}
+    </p>
+    <h2>Measures</h2>
+    <canvas id="myChart" width="800" height="400"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels : [{% for item in labels %}"{{ item }}",{% endfor %}],
+            datasets: [{
+              label: "Temperature",
+              data : [{% for item in values %}{{ item }},{% endfor %}],
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+    <div class="container">
+        <div class="row">
+            {% regroup sensor.measurement_set.all by unit as measurements_kind %}
+            {% for measures in measurements_kind %}
+                <div class="col-sm">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">{{ measures.grouper }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for m in measures.list %}
+                                <tr>
+                                    <th scope="row">{{ m.time|date:'d/m/Y H:i' }}</th>
+                                    <td>{{ m.value }}{{ m.unit.unit }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-        {% endfor %}
-        
-
-    </div>
-</div>
-{% endblock%}
+{% endblock %}

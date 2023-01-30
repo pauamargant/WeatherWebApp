@@ -41,7 +41,7 @@ class Measurement(models.Model):
     class Meta:
         models.UniqueConstraint(
             fields=['time', 'sensor'], name="unique_measure_sensor")
-        ordering = ['-time']
+        ordering = ['-sensor', '-unit', '-time']
 
     def __str__(self):
         return f"{self.value}{self.unit.unit} ({self.time})"
