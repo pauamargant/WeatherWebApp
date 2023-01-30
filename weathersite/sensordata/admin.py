@@ -13,7 +13,7 @@ class MeasureAdmin(admin.ModelAdmin):
 
 
 class SensorAdmin(admin.ModelAdmin):
-    list_display = ('room', 'description')
+    list_display = ('id', 'room', 'description')
     list_filter = ('room', 'measurements')
 
 

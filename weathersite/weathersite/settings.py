@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sensordata.apps.SensordataConfig'
+    'sensordata.apps.SensordataConfig',
+    'sensorapi.apps.SensorapiConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

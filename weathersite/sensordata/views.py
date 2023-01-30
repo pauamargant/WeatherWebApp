@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views import generic
 from .models import Measure, Sensor, Measurement
 
 
@@ -16,3 +17,16 @@ def index(request):
                'measurements': Measurement.objects.all()
                }
     return render(request, 'index.html', context=context)
+
+
+class SensorDetailView(generic.DetailView):
+    model = Sensor
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["measures_names"] = ', '.join(
+            [m.name for m in context["sensor"].measurements.all()])
+
+        
+
+        return context

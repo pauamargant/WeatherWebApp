@@ -4,17 +4,18 @@ from django.urls import reverse
 
 class Measure(models.Model):
     """Used to specify which measurement can a sensor do (f. ex Temeprature)"""
+    name = models.CharField(max_length=20, primary_key=True)
     unit = models.CharField(max_length=10)
-    description = models.CharField(max_length=200)
-    name = models.CharField(max_length=20)
+    description = models.CharField(blank=True, max_length=200)
 
     def __str__(self):
-        return self.description
+        return self.unit
 
 
 class Sensor(models.Model):
     """Model used to store information about sensors"""
     # Fields
+    id = models.CharField(max_length=20, primary_key=True)
     room = models.CharField(
         max_length=20, help_text='Enter the room in which the sensor sits')
     measurements = models.ManyToManyField(Measure)
@@ -35,7 +36,7 @@ class Measurement(models.Model):
     value = models.FloatField()
     unit = models.ForeignKey('Measure', on_delete=models.CASCADE)
     sensor = models.ForeignKey('Sensor', on_delete=models.CASCADE)
-    time = models.TimeField(auto_now=False, auto_now_add=True)
+    time = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     class Meta:
         models.UniqueConstraint(

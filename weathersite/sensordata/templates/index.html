@@ -23,7 +23,9 @@
 {% for s in sensors %}
 <li> Sensor {{s.id}}:
      {% for m in s.measurement_set.all %}
-      {{m}}
+     <ul>
+        <li>{{m}}</li>
+     </ul>
     {% endfor %}
 {% endfor %}
  </ul>
